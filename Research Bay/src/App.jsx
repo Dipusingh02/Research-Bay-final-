@@ -8,7 +8,7 @@ const App = () => {
   const [year, setYear] = useState('');
   const [author, setAuthor] = useState('');
   const [data, setData] = useState([]);
-
+ 
   // Handle file input change
   const handleFile = (e) => {
     setFile(e.target.files[0]);
@@ -57,7 +57,33 @@ const App = () => {
     }).catch((err) => {
       console.log('Error found: ', err);
     });
+  };    
+
+  const searchHandle = async (event) => {
+    let key = event.target.value;
+    if (key) {
+      try {
+        const result = await axios.get(`http://localhost:8081/search/${key}`);
+        if (result.data) {
+          setData(result.data);
+        } else {
+          setData([]); // Clear data if no result is found
+        }
+      } catch (err) {
+        console.error('Error fetching search results:', err);
+      }
+    } else {
+      // If the search input is cleared, reload the entire data
+      try {
+        const result = await axios.get('http://localhost:8081/');
+        setData(result.data);
+      } catch (err) {
+        console.error('Error fetching data:', err);
+      }
+    }
   };
+  
+  
 
   return (
     <div className='container'>
@@ -67,10 +93,12 @@ const App = () => {
       <input type='text' placeholder='Author' value={author} onChange={handleAuthorChange} />
       <button onClick={handleUpload}>Upload</button>
       <br />
+      <input type='text' placeholder='Search Paper' onChange={searchHandle}/>
+      <br />
       {data.length > 0 ? (
         <ul>
           {data.map((item) => (
-            <li key={item.id}>
+            <li className='list-class' key={item.id}>
               <p>File: {item.pdf}</p>
               <p>Title: {item.title}</p>
               <p>Year: {item.year}</p>
@@ -79,7 +107,7 @@ const App = () => {
           ))}
         </ul>
       ) : (
-        <p>No files available</p>
+        <h1>No files available</h1>
       )}
     </div>
   );

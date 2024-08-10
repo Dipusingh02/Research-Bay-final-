@@ -1,7 +1,6 @@
-body{
+.list-class{
 
-    background-color: black;
+    border: 2px solid black;
+    border-radius: 2px;
 }
-.container{
-    background-color: aquamarine;
-}
+

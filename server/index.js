@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { response } from 'express';
 import mysql from 'mysql';
 import cors from 'cors';
 import multer from 'multer';
@@ -79,6 +79,19 @@ app.get('/files/:filename', (req, res) => {
         });
     });
 });
+
+app.get('/search/:key', (req, res)=>{
+
+    const sql = "SELECT * FROM users WHERE title = ?"
+    const data = req.params.key;
+    db.query(sql, data ,(err, result, fields)=>{
+        if(err){
+            console.log("Error in searching");
+        } 
+        res.send(result);
+    })
+
+})
 
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
