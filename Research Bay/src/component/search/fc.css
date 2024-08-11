@@ -1,0 +1,34 @@
+.file-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    
+  }
+  
+  .file-card {
+    border: 1px solid #ccc;
+    padding: 16px;
+    width: 200px;
+    text-align: center;
+    margin: 1rem;
+    background-color: antiquewhite;
+  }
+  
+  .file-card h3 {
+    margin: 0 0 8px;
+  }
+  
+  .file-card p {
+    margin: 4px 0;
+  }
+  
+  .file-card a {
+    display: block;
+    margin: 8px 0;
+    color: blue;
+  }
+  
+  .file-card div span {
+    font-size: 20px;
+  }
+  
