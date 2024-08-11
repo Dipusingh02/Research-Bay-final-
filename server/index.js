@@ -391,6 +391,50 @@ app.post('/signin', async function (req, res) {
     }
 });
 
+app.get("/profile/:id", async (req, res) => {
+    const userId = req.params.id;
+
+    try {
+        pool.getConnection((err, connection) => {
+            if (err) {
+                console.error('Error getting a database connection:', err);
+                return res.status(500).json({
+                    msg: 'Database connection error'
+                });
+            }
+
+            const sql = "SELECT * FROM Newusers WHERE id = ?";
+            connection.query(sql, [userId], (error, result) => {
+                connection.release(); // Release the connection back to the pool after query execution
+
+                if (error) {
+                    console.error('Error executing query:', error);
+                    return res.status(500).json({
+                        msg: 'Error executing query'
+                    });
+                }
+
+                if (result.length > 0) {
+                    res.status(200).json({
+                        msg: 'User profile retrieved successfully',
+                        user: result[0] // Assuming you only want the first match
+                    });
+                } else {
+                    res.status(404).json({
+                        msg: 'User not found'
+                    });
+                }
+            });
+        });
+    } catch (error) {
+        console.error('Unexpected error during profile retrieval:', error);
+        res.status(500).json({
+            msg: 'An unexpected error occurred'
+        });
+    }
+});
+
+
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
-import "./search.css"; // CSS for styling
-import "./fc.css"; // CSS for file cards
+import "./search.css"; 
+import "./fc.css"; 
 
 // FileCard component for displaying individual file details
 const FileCard = ({ file, onRate }) => {

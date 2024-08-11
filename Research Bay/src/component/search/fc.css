@@ -11,7 +11,9 @@
     width: 200px;
     text-align: center;
     margin: 1rem;
-    background-color: antiquewhite;
+    background: rgb(48, 48, 123);
+   
+    background: linear-gradient(90deg, rgba(13,13,102,1) 0%, rgba(3,182,218,1) 0%, rgba(2,0,36,1) 100%);
   }
   
   .file-card h3 {
