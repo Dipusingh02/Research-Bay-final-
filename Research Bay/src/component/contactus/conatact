@@ -1,0 +1,76 @@
+import React from "react";
+import { Navbar } from "../../components";
+import "./form.css";
+import { Footer } from "../../container";
+
+const Contact = () => {
+  return (
+    <div>
+      <div className="gradient__bg">
+        <Navbar />
+      <div className="container">
+        <div className="contact-form ">
+          <h1 className='gradient__text'>Get In Touch</h1>
+          <form
+            action="https://formspree.io/f/mkndzryw"
+            method="POST"
+            className="contact-inputs"
+          >
+            <div className="uniblu__header-content__input">
+              <input
+                type="text"
+                name="name"
+                placeholder="Name"
+                autoComplete="off"
+                required
+              />
+            </div>
+            <div className="uniblu__header-content__input">
+              <input
+                type="email"
+                placeholder="Your Email address"
+                autoComplete="off"
+                required
+              />
+            </div>
+            <div className="uniblu__header-content__input">
+              <input
+                type="number"
+                name="Phone Number"
+                placeholder="Phone"
+                autoComplete="off"
+                required
+              />
+            </div>
+            <div className="uniblu__header-content__input" >
+              <textarea 
+              placeholder="Any Enquiry"
+                name="message"
+                cols="30"
+                rows="6"
+                autoComplete="off"
+                required
+              ></textarea>
+            </div>
+            <div className="uniblu__header-content__input">
+            <button type='button' value="send" >Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      </div>
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d13726.492288483405!2d76.65281125!3d30.672740850000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1709904992587!5m2!1sen!2sin"
+        width="100%"
+        height="450"
+        style={{ border: 0 }}
+        allowFullScreen=""
+        loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade"
+      ></iframe>
+      <Footer />
+    </div>
+  );
+};
+
+export default Contact;

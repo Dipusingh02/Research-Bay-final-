@@ -1,23 +1,35 @@
 .file-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 16px;
-    
+    margin-left: 0.9rem;
+    gap: 12px;
+    font-family: "Open Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-variation-settings:
+      "wdth" 100;
   }
-  
+  .file-container p{
+    color: #81AFDD;
+  }
   .file-card {
     border: 1px solid #ccc;
     padding: 16px;
     width: 200px;
     text-align: center;
     margin: 1rem;
-    background: rgb(48, 48, 123);
+    background: #eeeee4;
+    border-radius: 10px;
    
-    background: linear-gradient(90deg, rgba(13,13,102,1) 0%, rgba(3,182,218,1) 0%, rgba(2,0,36,1) 100%);
+    /* background: linear-gradient(90deg, rgba(13,13,102,1) 0%, rgba(3,182,218,1) 0%, rgba(2,0,36,1) 100%); */
   }
   
   .file-card h3 {
     margin: 0 0 8px;
+    background: linear-gradient(89.97deg, #AE67FA 1.84%, #F49867 102.67%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
   
   .file-card p {
@@ -28,6 +40,9 @@
     display: block;
     margin: 8px 0;
     color: blue;
+    text-decoration: none;
+   
+    
   }
   
   .file-card div span {

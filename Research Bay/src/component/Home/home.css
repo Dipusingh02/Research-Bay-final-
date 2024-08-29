@@ -1,6 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Raleway:wght@200;300&display=swap');
 .bgcolor{
-   height: 100vh;
-    background: rgb(13,13,102);
-   
-    background: linear-gradient(90deg, rgba(13,13,102,1) 0%, rgba(3,182,218,1) 0%, rgba(2,0,36,1) 100%);
+     background: rgb(13,13,102);
+    
+     background: linear-gradient(90deg, rgba(13,13,102,1) 0%, rgba(3,182,218,1) 0%, rgba(2,0,36,1) 100%);
+     
+ }
+#wh{
+    height: auto;
 }

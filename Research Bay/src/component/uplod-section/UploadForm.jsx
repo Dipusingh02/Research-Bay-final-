@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import "./upload.css";
 import Navbar from "../Navbar/Navbar";
+import Footer from "../footer/Footer";
 
 function UploadForm() {
   const [file, setFile] = useState(null);
@@ -45,8 +46,11 @@ function UploadForm() {
   return (
     <div>
       <Navbar />
-      <div className="bgcolor">
-      <div className="form-container">
+      <div className="bgcolor" >
+      <div id="fid">
+      <br />
+      <div className="form-container" >
+      
         <form onSubmit={handleSubmit} className="form">
           <div className="form-input">
             <input
@@ -96,7 +100,9 @@ function UploadForm() {
         </form>
         {uploadStatus && <div className="upload-status">{uploadStatus}</div>}
       </div>
+      </div>
     </div>
+    <Footer />
     </div>
   );
 }

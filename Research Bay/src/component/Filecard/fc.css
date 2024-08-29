@@ -13,7 +13,10 @@
   margin: 1rem;
   background-color: antiquewhite;
 }
-
+add-to-library-button{
+  color: beige;
+  background-color: yellow;
+}
 .file-card h3 {
   margin: 0 0 8px;
 }

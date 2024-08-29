@@ -1,12 +1,15 @@
 .form-container {
     max-width: 400px;
     margin: 0 auto;
+    background: #eeeee4;;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
-  
+  #mtl{
+   padding: 2rem;
+  }
   h2 {
     text-align: center;
     margin-bottom: 20px;
@@ -52,4 +55,7 @@
   .signup-link {
     text-align: center;
     margin-top: 20px;
+  }
+  .fp-container{
+    height: 70vh;
   }

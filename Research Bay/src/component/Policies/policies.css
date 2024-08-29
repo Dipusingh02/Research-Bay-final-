@@ -1,0 +1,70 @@
+.policies-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    line-height: 1.6;
+    font-family: "Open Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-variation-settings:
+      "wdth" 100;
+}
+.policies-container h1
+{
+    text-align: center;
+    font-weight: 700;
+    background: linear-gradient(89.97deg, #AE67FA 1.84%, #F49867 102.67%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.flowchart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.policy-section {
+    background-color:  #eeeee4;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    /* color: rgb(235, 191, 135); */
+    width: 100%;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.policy-section h2 {
+    margin-top: 0;
+    /* color: #333; */
+    color: rgb(81, 81, 215);
+}
+
+.arrow {
+    width: 0; 
+    height: 0; 
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 20px solid #825959;
+    margin-bottom: 20px;
+}
+.uniblu_wh_bghero{
+    background-image: url(../../assets/hero-bg-10.png);
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: 100% 100%;
+    position: relative; 
+   
+   
+}
+.uniblu_wh_heroblur{
+    
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+}

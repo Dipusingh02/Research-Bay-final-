@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./LoginForm.css"; // Use the same CSS file as the LoginForm component
 import Navbar from "../Navbar/Navbar";
+import Footer from "../footer/Footer";
 
 // Validation schema
 const SignupSchema = Yup.object().shape({
@@ -52,6 +53,8 @@ const SignupForm = () => {
   return (
     <div>
       <Navbar />
+      <div className="gradient__bg">
+      <div id="mtl">
       <div className="form-container">
         <h2>SIGN UP</h2>
         <Formik
@@ -64,6 +67,7 @@ const SignupForm = () => {
           onSubmit={handleSubmit}
         >
           {({ isSubmitting }) => (
+               
             <Form className="login-form">
               <div className="form-group">
                 <label htmlFor="name">Name</label>
@@ -110,6 +114,9 @@ const SignupForm = () => {
           Already have an account? <Link to="/login">Login</Link>
         </div>
       </div>
+      </div>
+      </div>
+      <Footer />
     </div>
   );
 };

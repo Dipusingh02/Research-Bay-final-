@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
-import "./search.css"; 
-import "./fc.css"; 
+import "./search.css";
+import "./fc.css";
 
 // FileCard component for displaying individual file details
 const FileCard = ({ file, onRate }) => {
@@ -60,7 +60,9 @@ const FileContainer = () => {
   useEffect(() => {
     const fetchFiles = async () => {
       try {
-        const response = await axios.get(`http://localhost:8081/search/${query}`);
+        const response = await axios.get(
+          `http://localhost:8081/search/${query}`
+        );
         setFiles(response.data);
       } catch (error) {
         console.error("Error fetching files:", error);
@@ -81,22 +83,35 @@ const FileContainer = () => {
   };
 
   return (
-    <div className="search-container">
-      <input
-        type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search by title, filename, author, year..."
-        className="search-input"
-      />
-      <div className="file-container">
-        {files.length > 0 ? (
-          files.map((file) => (
-            <FileCard key={file._id} file={file} onRate={handleRate} />
-          ))
-        ) : (
-          <p>No results found.</p>
-        )}
+    <div className="search-body">
+      <div className="search-container">
+        <div className="search-header">
+          <h1>Discover and Share Knowledge</h1>
+          <br />
+          <p>
+            Welcome to ResearchBay, your gateway to a world of research. Explore
+            a vast collection of scholarly papers, or share your own work with a
+            global audience. Whether you’re a student, academic, or
+            professional, ResearchBay is here to support your journey of
+            discovery.
+          </p>
+          </div>
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder=" Search  by  Title,  Tags,  Author,  Year..."
+          className="search-input"
+        />
+        <div className="file-container">
+          {files.length > 0 ? (
+            files.map((file) => (
+              <FileCard key={file._id} file={file} onRate={handleRate} />
+            ))
+          ) : (
+            <p>No results found.</p>
+          )}
+        </div>
       </div>
     </div>
   );

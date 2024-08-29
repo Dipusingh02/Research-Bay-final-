@@ -1,0 +1,151 @@
+.footer {
+  background-color: #0f2a44;
+  color: white;
+  padding: 2rem 5vw;
+  font-family: "Open Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-variation-settings:
+      "wdth" 100;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.footer-contact p {
+  color: white;
+}
+
+.footer-left, .footer-right {
+  flex: 1;
+  margin: 1rem;
+}
+
+.footer-center {
+  display: flex;
+  flex: 2;
+  margin: 1rem;
+  justify-content: space-between;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.footer-logo-circle {
+  width: 10rem;
+  height: 10rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.footer-logo-circle img {
+  width: 100%;
+  object-fit: contain;
+  height: auto;
+}
+
+.para {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.footer-contact h3, .footer-links h3, .footer-newsletter h3 {
+  color: #ffc107;
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links {
+  margin: 0 4rem;
+}
+
+.footer-links ul li {
+  margin: 0.5rem 0;
+}
+
+.footer-links ul li a, .footer-bottom p a {
+  color: white;
+  text-decoration: none;
+}
+
+.footer-links ul li a:hover, .footer-bottom p a:hover {
+  text-decoration: underline;
+}
+
+.footer-secure img {
+  width: 25%;
+  aspect-ratio: 3/2;
+  object-fit: contain;
+  margin-right: 1rem;
+}
+
+.footer-social a {
+  display: inline-block;
+  color: white;
+  margin-right: 1rem;
+  font-size: 2rem;
+  transition: color 0.3s ease;
+}
+
+.footer-social a:hover {
+  color: #ffc107;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.footer-bottom p {
+  margin: 0.5rem 0;
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-left, .footer-right, .footer-center {
+    margin: 1rem 0;
+    flex: none;
+    width: 100%;
+    text-align: center;
+  }
+
+  .footer-center {
+    flex-direction: column;
+  }
+
+  .footer-logo {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-logo-circle {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .footer-social a {
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+  }
+
+  .footer-bottom {
+    margin-top: 1rem;
+  }
+}

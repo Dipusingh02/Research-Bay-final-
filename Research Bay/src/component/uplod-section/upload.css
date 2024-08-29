@@ -1,15 +1,23 @@
 .form-conatiner{
-    background: rgb(13,13,102);
-background: linear-gradient(90deg, rgba(13,13,102,1) 0%, rgba(3,182,218,1) 0%, rgba(2,0,36,1) 100%);
+    font-family: "Open Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-variation-settings:
+      "wdth" 100;
 display: flex;
 justify-content: center;
 align-items: center;
 height:100vh;
 }
+.bgcolor{
+    background: rgb(13,13,102);
+    background: linear-gradient(90deg, rgba(13,13,102,1) 0%, rgba(3,182,218,1) 0%, rgba(2,0,36,1) 100%);
+}
 .form-input{
-    width:40rem;
+    width:22rem;
     padding: 0.5rem;
     display: flex;
+    border-radius: 5rem;
     border-radius: 1rem;
 }
 
