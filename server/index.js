@@ -54,17 +54,27 @@ const pool = mysql.createPool({
 
 
 // Authentication middleware
+
 const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
-    if (!token) return res.sendStatus(401); // Unauthorized
-
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-        if (err) return res.sendStatus(403); // Forbidden
-        req.user = user;
-        next();
+  
+    if (token == null) {
+      console.log("No token provided");
+      return res.status(401).json({ msg: "No token provided" });
+    }
+  
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, user) => {
+      if (err) {
+        console.log("Token verification failed:", err);
+        return res.status(403).json({ msg: "Token verification failed", error: err });
+      }
+      console.log("Token verified, user:", user);
+      req.user = user;
+      next();
     });
-};
+  };
+
 
 // Nodemailer transporter setup
 const transporter = nodemailer.createTransport({
@@ -74,6 +84,11 @@ const transporter = nodemailer.createTransport({
         pass: process.env.EMAIL_PASS,
     },
 });
+
+app.get('/verify-token', authenticateToken, (req, res) => {
+    res.json({ user: req.user });
+  });
+  
 
 // Endpoint to request a password reset link
 app.post('/forget-password-linkemail', (req, res) => {
@@ -134,10 +149,10 @@ app.post('/forget-password-linkemail', (req, res) => {
         });
     });
 });
-
 app.post('/reset-password', (req, res) => {
     const { token, password } = req.body;
 
+    // Ensure both token and password are provided
     if (!token || !password) {
         return res.status(400).json({ message: 'Token and password are required' });
     }
@@ -148,15 +163,23 @@ app.post('/reset-password', (req, res) => {
             return res.status(500).json({ message: 'Database connection error', details: err });
         }
 
+        // Check if the token is valid and not expired
         const sql = 'SELECT * FROM newusers WHERE reset_token = ? AND reset_token_expires > ?';
         connection.query(sql, [token, Date.now()], (error, result) => {
-            if (error || result.length === 0) {
+            if (error) {
+                console.error('Error querying the database:', error);
+                connection.release();
+                return res.status(500).json({ message: 'Database query error', details: error });
+            }
+
+            if (result.length === 0) {
                 connection.release();
                 return res.status(400).json({ message: 'Invalid or expired token' });
             }
 
             const userId = result[0].id;
 
+            // Update the user's password and clear the reset token
             const sqlUpdate = 'UPDATE newusers SET password = ?, reset_token = NULL, reset_token_expires = NULL WHERE id = ?';
             connection.query(sqlUpdate, [password, userId], (updateError) => {
                 connection.release();
@@ -170,6 +193,7 @@ app.post('/reset-password', (req, res) => {
         });
     });
 });
+
 
 // File upload endpoint
 app.post('/upload', upload.single('file'), (req, res) => {
@@ -244,6 +268,49 @@ app.get('/search/:key', (req, res) => {
         res.json(result);
     });
 });
+
+
+// const searchHistory = {};
+
+// app.get('/search/:key', (req, res) => {
+//   // ...
+
+//   pool.query(sql, [searchKey, searchKey, searchKey, searchKey, searchKey], (err, result) => {
+//     if (err) {
+//       // ...
+//     }
+
+//     const similarUsers = calculateSimilarUsers(userId, searchHistory)
+//       .sort((a, b) => b.similarity - a.similarity); // Sort similar users by similarity
+
+//     const similarItems = calculateSimilarItems(result, key)
+//       .filter(({ similarity }) => similarity > 0.5); // Filter items with low similarity
+
+//     res.json({ result, similarUsers, similarItems });
+//   });
+// });
+
+// // ...
+
+// // Calculate Cosine similarity
+// function calculateCosineSimilarity(item, key) {
+//   const itemVector = getItemVector(item);
+//   const keyVector = getKeyVector(key);
+//   // ...
+// }
+
+// // Helper functions to get item and key vectors
+// function getItemVector(item) {
+//   // Implement this function to get the vector representation of an item
+//   // For example, you could use the item's tags or keywords
+//   return item.tags.split(' ').map(tag => tag.toLowerCase());
+// }
+
+// function getKeyVector(key) {
+//   // Implement this function to get the vector representation of a key
+//   // For example, you could use the key's individual words
+//   return key.split(' ').map(word => word.toLowerCase());
+// }
 
 // User signup
 app.post('/signup', async (req, res) => {
@@ -364,39 +431,74 @@ app.post('/logout', (req, res) => {
     res.status(200).json({ msg: 'Logged out successfully' });
 });
 
-// Add file to user's library
-app.post('/add-to-library', authenticateToken, (req, res) => {
-    const userId = req.user.id;
-    const { fileId } = req.body;
 
-    const sql = 'INSERT INTO library (user_id, item_id) VALUES (?, ?)';
+// Add file to library route
+app.post("/add-to-library", authenticateToken, (req, res) => {
+    // Extract user ID from the authenticated user object set by middleware
+    const userId = req.user?.id;
+    const { fileId } = req.body;
+  
+    // Log incoming request details for debugging
+    console.log(`Received request to add file ${fileId} to library for user ${userId}`);
+  
+    // Check if userId and fileId are provided and valid
+    if (!userId) {
+      console.error("User ID not found in request. Authentication may have failed.");
+      return res.status(401).json({ msg: "Unauthorized: User not found" });
+    }
+  
+    if (!fileId) {
+      console.error("No fileId provided in request body.");
+      return res.status(400).json({ msg: "No fileId provided" });
+    }
+  
+    // SQL query to add the file to the library
+    const sql = "INSERT INTO library (user_id, item_id) VALUES (?, ?)";
+  
+    // Execute the query
     pool.query(sql, [userId, fileId], (err, result) => {
-        if (err) {
-            console.error('Error adding file to library:', err);
-            return res.status(500).json({ msg: 'Error adding to library', details: err });
+      // Log and respond appropriately based on the query result
+      if (err) {
+        console.error("Error adding file to library:", err);
+  
+        // Check if the error is related to duplicate entries (e.g., primary key or unique constraints)
+        if (err.code === "ER_DUP_ENTRY") {
+          return res.status(409).json({ msg: "File is already in the library" });
         }
-        res.status(200).json({ msg: 'File added to library successfully' });
+  
+        // For any other errors, send a generic error response
+        return res.status(500).json({
+          msg: "An error occurred while adding the file to the library",
+          details: err.message,
+        });
+      }
+  
+      // Successfully added file to library
+      console.log(`File ${fileId} added to library for user ${userId}`);
+      res.status(200).json({ msg: "File added to library successfully" });
     });
-});
+  });
+  
+
 
 // Get all files in the user's library
 app.get('/library', authenticateToken, (req, res) => {
     const userId = req.user.id;
-
+  
     const sql = `
-        SELECT u.id, u.title, u.author, u.pdf, u.year, u.tags 
-        FROM library l
-        JOIN users u ON l.item_id = u.id
-        WHERE l.user_id = ?
+      SELECT u.id, u.title, u.author, u.pdf, u.year, u.tags 
+      FROM library l
+      JOIN users u ON l.item_id = u.id
+      WHERE l.user_id = ?
     `;
     pool.query(sql, [userId], (err, result) => {
-        if (err) {
-            console.error('Error retrieving library:', err);
-            return res.status(500).json({ msg: 'Error retrieving library', details: err });
-        }
-        res.status(200).json(result);
+      if (err) {
+        console.error('Error retrieving library:', err);
+        return res.status(500).json({ msg: 'Error retrieving library', details: err });
+      }
+      res.status(200).json(result);
     });
-});
+  });
 
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);

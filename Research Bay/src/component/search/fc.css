@@ -13,9 +13,10 @@
     color: #81AFDD;
   }
   .file-card {
+    cursor: pointer;
     border: 1px solid #ccc;
     padding: 16px;
-    width: 200px;
+    width: 1000px;
     text-align: center;
     margin: 1rem;
     background: #eeeee4;
@@ -23,7 +24,12 @@
    
     /* background: linear-gradient(90deg, rgba(13,13,102,1) 0%, rgba(3,182,218,1) 0%, rgba(2,0,36,1) 100%); */
   }
-  
+  .file-card button{
+    color:white;
+    background-color: rgb(45, 84, 114);
+    border-radius: 0.2rem;
+
+  }
   .file-card h3 {
     margin: 0 0 8px;
     background: linear-gradient(89.97deg, #AE67FA 1.84%, #F49867 102.67%);

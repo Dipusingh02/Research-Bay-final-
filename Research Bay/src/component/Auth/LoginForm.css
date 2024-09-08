@@ -36,7 +36,18 @@
     color: red;
     font-size: 0.875em;
   }
-  
+  .fp-container h2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    font-weight: 700;
+    background: linear-gradient(89.97deg, #AE67FA 1.84%, #F49867 102.67%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
   .submit-button {
     width: 100%;
     padding: 10px;
@@ -59,3 +70,9 @@
   .fp-container{
     height: 70vh;
   }
+
+  .reset-password-container{
+   height: 100vh;
+  
+  }
+  

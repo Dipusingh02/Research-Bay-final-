@@ -5,54 +5,53 @@ import "./search.css";
 import "./fc.css";
 
 // FileCard component for displaying individual file details
-const FileCard = ({ file, onRate }) => {
-  const [rating, setRating] = useState(file.rating || 0);
+// const FileCard = ({ file, onAddToLibrary }) => {
+//   return (
+//     <div className="file-card">
+//       <h3>{file.title}</h3>
+//       <p>Author: {file.author}</p>
+//       <p>Year: {file.year}</p>
+//       <a href={`http://localhost:8081/files/${file.pdf}`} download>
+//         Download PDF
+//       </a>
+//       <button onClick={() => onAddToLibrary(file._id)}>Add to Library</button>
+//     </div>
+//   );
+// };
+const FileCard = ({ file, onAddToLibrary }) => {
+  console.log("FileCard received file:", file); // Debug log to check the file object
 
-  const handleRate = async (newRating) => {
-    setRating(newRating);
-    onRate(file._id, newRating);
-  };
+  // Check if file._id exists and is not undefined
+  if (!file || !file._id) {
+    console.error("File object is missing _id:", file); // Additional logging for missing _id
+  }
 
   return (
-    <div className="file-card">
-      <h3>{file.title}</h3>
-      <p>Author: {file.author}</p>
-      <p>Year: {file.year}</p>
-      <a href={`http://localhost:8081/files/${file.pdf}`} download>
-        Download PDF
-      </a>
-      <div className="rating">
-        <span>Rating: </span>
-        {[1, 2, 3, 4, 5].map((star) => (
-          <span
-            key={star}
-            onClick={() => handleRate(star)}
-            style={{
-              cursor: "pointer",
-              color: star <= rating ? "gold" : "gray",
-            }}
-          >
-            ★
-          </span>
-        ))}
-      </div>
-    </div>
+    <div className="file-card">  
+    <a href={`http://localhost:8081/files/${file.pdf}`} download>   <h3>{file.title}</h3>  
+    <p>Author: {file.author}</p>  
+    <p>Year: {file.year}</p>  
+    <a href={`http://localhost:8081/files/${file.pdf}`} download>  
+      Download PDF  
+    </a>  
+    <button onClick={() => onAddToLibrary(file.id)}>Add to Library</button>  
+    </a>  
+   </div> 
   );
 };
 
+
 FileCard.propTypes = {
-  file: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    author: PropTypes.string.isRequired,
-    year: PropTypes.string.isRequired,
-    pdf: PropTypes.string.isRequired,
-    rating: PropTypes.number,
-  }).isRequired,
-  onRate: PropTypes.func.isRequired,
+  file: PropTypes.shape({  
+   id: PropTypes.string.isRequired,  
+   title: PropTypes.string.isRequired,  
+   author: PropTypes.string.isRequired,  
+   year: PropTypes.string.isRequired,  
+   pdf: PropTypes.string.isRequired,  
+  }).isRequired,  
+  onAddToLibrary: PropTypes.func.isRequired, 
 };
 
-// FileContainer component to handle search and display results
 const FileContainer = () => {
   const [query, setQuery] = useState("");
   const [files, setFiles] = useState([]);
@@ -60,9 +59,7 @@ const FileContainer = () => {
   useEffect(() => {
     const fetchFiles = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8081/search/${query}`
-        );
+        const response = await axios.get(`http://localhost:8081/search/${query}`);
         setFiles(response.data);
       } catch (error) {
         console.error("Error fetching files:", error);
@@ -74,13 +71,125 @@ const FileContainer = () => {
     }
   }, [query]);
 
-  const handleRate = async (id, rating) => {
-    try {
-      await axios.post(`http://localhost:8081/rate-file/${id}`, { rating });
-    } catch (error) {
-      console.error("Error rating file:", error);
-    }
-  };
+  // const handleAddToLibrary = async (fileId) => {
+  //   const token = localStorage.getItem("token");
+    
+  //   if (!token) {
+  //     console.error("No token found, user might not be logged in.");
+  //     alert("Please log in to continue.");
+  //     return;
+  //   }
+  
+  //   try {
+  //     const response = await axios.post(
+  //       "http://localhost:8081/add-to-library",
+  //       { fileId },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
+  //     if (response.status === 200) {
+  //       alert("File added to library successfully!");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error adding file to library:", error);
+  
+  //     if (error.response && error.response.status === 403) {
+  //       console.error("Authorization failed. Token might be invalid or expired.");
+  //       alert("You are not authorized to perform this action. Please log in again.");
+  
+  //       // Optionally force a logout
+  //       localStorage.removeItem("token");
+  //       // Redirect to login page
+  //       window.location.href = "/login";
+  //     }
+  //   }
+  // };
+
+//   const handleAddToLibrary = async (fileId) => {
+//     console.log("Received fileId:", fileId); // Log to confirm fileId is correct
+//     if (!fileId || fileId.trim() === "") {
+//       console.error("No fileId provided or fileId is empty.");
+//       alert("Please select a file to add to the library.");
+//       return;
+//     }
+
+//     const token = localStorage.getItem("token");
+
+//     if (!token) {
+//       console.error("No token found, user might not be logged in.");
+//       alert("Please log in to continue.");
+//       return;
+//     }
+
+//     try {
+//       const response = await axios.post(
+//         "http://localhost:8081/add-to-library",
+//         { fileId: fileId.trim() }, // Ensure fileId is correctly sent
+//         {
+//           headers: {
+//             Authorization: `Bearer ${token}`,
+//           },
+//         }
+//       );
+//       if (response.status === 200) {
+//         alert("File added to library successfully!");
+//       }
+//     } catch (error) {
+//       console.error("Error adding file to library:", error);
+//       if (error.response && error.response.status === 403) {
+//         alert("You are not authorized to perform this action. Please log in again.");
+//         localStorage.removeItem("token");
+//         window.location.href = "/login";
+//       } else {
+//         alert("Error adding file to the library. Please try again later.");
+//       }
+//     }
+//     alert('File added to library successfully!');  
+// };
+const handleAddToLibrary = async (fileId) => {  
+  console.log("Received fileId:", fileId); // Log to confirm fileId is correct  
+  if (!fileId) {  
+   console.error("No fileId provided.");  
+   alert("Please select a file to add to the library.");  
+   return;  
+  }  
+  
+  const token = localStorage.getItem("token");  
+  
+  if (!token) {  
+   console.error("No token found, user might not be logged in.");  
+   alert("Please log in to continue.");  
+   return;  
+  }  
+  
+  try {  
+   const response = await axios.post(  
+    "http://localhost:8081/add-to-library",  
+    { fileId }, 
+    {  
+      headers: {  
+       Authorization: `Bearer ${token}`,  
+      },  
+    }  
+   );  
+   if (response.status === 200) {  
+    alert("File added to library successfully!");  
+   }  
+  } catch (error) {  
+   console.error("Error adding file to library:", error);  
+   if (error.response && error.response.status === 403) {  
+    alert("You are not authorized to perform this action. Please log in again.");  
+    localStorage.removeItem("token");  
+    window.location.href = "/login";  
+   } else {  
+    alert("Error adding file to the library. Please try again later.");  
+   }  
+  }  
+};
+
 
   return (
     <div className="search-body">
@@ -91,22 +200,25 @@ const FileContainer = () => {
           <p>
             Welcome to ResearchBay, your gateway to a world of research. Explore
             a vast collection of scholarly papers, or share your own work with a
-            global audience. Whether you’re a student, academic, or
-            professional, ResearchBay is here to support your journey of
-            discovery.
+            global audience. Whether you’re a student, academic, or professional,
+            ResearchBay is here to support your journey of discovery.
           </p>
-          </div>
+        </div>
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder=" Search  by  Title,  Tags,  Author,  Year..."
+          placeholder="Search by Title, Tags, Author, Year..."
           className="search-input"
         />
         <div className="file-container">
           {files.length > 0 ? (
             files.map((file) => (
-              <FileCard key={file._id} file={file} onRate={handleRate} />
+              <FileCard
+                key={file._id}
+                file={file}
+                onAddToLibrary={handleAddToLibrary}
+              />
             ))
           ) : (
             <p>No results found.</p>
