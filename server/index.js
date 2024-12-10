@@ -23,10 +23,11 @@ const __dirname = path.dirname(__filename);
 
 app.use(express.json());
 app.use(cors({
-    origin: 'http://localhost:5173', // Assuming this is where your frontend runs
-    methods: ['GET', 'POST'],
-    credentials: true
+    origin: '*', 
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], 
+    credentials: true 
 }));
+
 app.use(express.static(path.join(__dirname, 'uploads'))); // Serve static files from uploads
 
 // Configure multer for file uploads
